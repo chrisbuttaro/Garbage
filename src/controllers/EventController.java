@@ -55,13 +55,13 @@ public class EventController {
 	@RequestMapping(path="Events",method=RequestMethod.POST)	
 	public Event create(@RequestBody String EventJSON){ 
 		ObjectMapper mapper= new ObjectMapper(); 
-		Event u= null; 
+		Event ev= null; 
 		try{
-			u=mapper.readValue(EventJSON, Event.class);
+			ev=mapper.readValue(EventJSON, Event.class);
 		}catch( Exception e){
 			System.out.println(e);
 		}
-		return EventDAO.create(u); 
+		return EventDAO.create(ev); 
 	}
 	@RequestMapping(path="Events/{id}", method=RequestMethod.DELETE)
 	public Event delete(@PathVariable int id){

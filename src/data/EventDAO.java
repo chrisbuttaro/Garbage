@@ -49,9 +49,8 @@ public class EventDAO {
 	}
 	
 	public Event create(Event newEvent){
-		 em.persist(newEvent);
+		em.persist(newEvent);
 		em.flush(); 
-		 
-		 return newEvent; 
+		return newEvent; 
 	}
 }
