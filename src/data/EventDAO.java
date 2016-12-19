@@ -26,7 +26,7 @@ public class EventDAO {
 	
 	public events update(int id, events e){
 		events existingEvent=em.find(events.class, id);
-		if(e.getItemname()!=null){
+		if(e.getItemname()!=""){
 		existingEvent.setItemname(e.getItemname());
 		}
 		if(e.getWeight()!=0){

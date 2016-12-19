@@ -43,11 +43,13 @@ createDeleteButtons=function(events){//create delete buttons
 	var deleteButton=$('<button>'); 
 	deleteButton.text('X');
 	deleteButton.attr('id', events[i].id);
+	//deleteButton.type('submit');
 	deleteButton.click(function(e){
-		var myReq = $.ajax({
+			$.ajax({
 			  type: "DELETE",
 			  url: "api/Events/"+e.target.id,
-			  dataType: "json"
+			  dataType: "json",
+			  success: location.reload()
 			});
 	});
 	deleteButtons[i]=deleteButton; 
@@ -81,7 +83,7 @@ createEditButtons=function(events){//create edit buttons
 		var editSubmit=$('<button>');
 		editSubmit.attr('id', $(this).closest('button').attr('realId'));
 		editSubmit.click(function(e){
-			var value = {"itemname": itemInput.val()};
+			var value = {"itemname": itemInput.val(), "weight": weightInput.val(), "date": dateInput.val(), "recyclable":recycInput.val()};
 			$.ajax({
 			    type: "POST",
 			    url: "api/Events/"+e.target.id,
