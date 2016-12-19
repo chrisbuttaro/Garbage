@@ -6,20 +6,20 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import entities.Event;
+import entities.events;
 
 @Transactional 
 public class EventDAO {
 	@PersistenceContext//includes jpa's entity manager
     private EntityManager em;
 	
-	public List<Event> index(){
-		  String query = "Select e from Event e";
-		  return em.createQuery(query, Event.class).getResultList();
+	public List<events> index(){
+		  String query = "Select e from events e";
+		  return em.createQuery(query, events.class).getResultList();
 		}
 	
-	public Event show(int id){
-		return em.find(Event.class,id); 
+	public events show(int id){
+		return em.find(events.class,id); 
 	}
 	
 //	public List showScores(int id){
@@ -30,25 +30,34 @@ public class EventDAO {
 //		  return scores;
 //	}
 	
-	public Event update(int id, Event u){
-		Event existingEvent=em.find(Event.class, id);
-		if(u.getItemname()!=null){
-		existingEvent.setItemname(u.getItemname());
+	public events update(int id, events e){
+		events existingEvent=em.find(events.class, id);
+		if(e.getItemname()!=null){
+		existingEvent.setItemname(e.getItemname());
 		}
-		
+//		if(e.getWeight()!=0){
+//			existingEvent.setWeight(e.getWeight());
+//			}
+//		if(e.getDate()!=null){
+//			existingEvent.setDate(e.getDate());
+//			}
+//		if(e.isRecyclable()!=null){
+//			existingEvent.setRecyclable(e.isRecyclable());
+//			}
+
 		em.persist(existingEvent);
 		em.flush(); 
 		return existingEvent; 
 	}
 	
-	public Event delete(int id){
-		Event u=em.find(Event.class, id);
-		em.createQuery("Delete from Event e where e.id="+id).executeUpdate();
-		em.remove(u);
-		return u; 
+	public events delete(int id){
+		events e=em.find(events.class, id);
+		em.createQuery("Delete from events e where e.id="+id).executeUpdate();
+		em.remove(e);
+		return e; 
 	}
 	
-	public Event create(Event newEvent){
+	public events create(events newEvent){
 		em.persist(newEvent);
 		em.flush(); 
 		return newEvent; 

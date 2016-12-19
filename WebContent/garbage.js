@@ -1,30 +1,113 @@
 
 var table = $('<table>');
-createTable=function(){
-table.append( '<tr><th>'  +  "Item" + '</th><th>'  +  "Weight " +'</th><th>'  + "Date" +'</th><th>'  +"Recyclable" +'</th></tr>');
+var Events=[];
+var deleteButtons=[]; 
+var editButtons=[]; 
+var createButton=$('<button>');
+
+
 var myReq = $.ajax({
 	  type: "GET",
 	  url: "api/Events",
 	  dataType: "json"
 	});
 	myReq.done(function(events) {
-		for(i=0; i<events.length; i++){
-		    var row = '<tr><td>'  +  events[i].itemname + '</td><td>'  +  events[i].weight + '</td><td>'+events[i].date  +'</td><td>'+events[i].recyclable +'</td></tr>';
-		    console.log('hello'+events[i].itemname);
-		    table.append(row);
-		}
+		
+		createTable(events);
+		
 	});
 	myReq.fail(function() {
 	  console.log('It blew up again');
 	});
-	$('body').append(table);
-	newItem();
+	
+
+createTable=function(events){
+	createEditButtons(events); 
+	createDeleteButtons(events);
+table.append( '<tr><th>'  +  "Item" + '</th><th>'  +  "Weight " +'</th><th>'  + "Date" +'</th><th>'  +"Recyclable" +'</th></tr>');
+for(i=0; i<events.length; i++){
+    var row = $('<tr><td>'  +  events[i].itemname + '</td><td>'  +  events[i].weight + '</td><td>'+events[i].date  +'</td><td>'+events[i].recyclable +'</td></tr>');
+    row.append(editButtons[i]);
+    row.append(deleteButtons[i]);
+    table.append(row);
+    $('body').append(table);	
+}
+newItem();
+
 }//end create Table
 
 
+createDeleteButtons=function(events){//create delete buttons
+	
+	for(i=0; i<events.length; i++){
+	var deleteButton=$('<button>'); 
+	deleteButton.text('X');
+	deleteButton.attr('id', events[i].id);
+	deleteButton.click(function(e){
+		var myReq = $.ajax({
+			  type: "DELETE",
+			  url: "api/Events/"+e.target.id,
+			  dataType: "json"
+			});
+	});
+	deleteButtons[i]=deleteButton; 
+	}
+	}//end create delete buttons
+
+createEditButtons=function(events){//create edit buttons
+
+	for(i=0; i<events.length; i++){
+	var editButton=$('<button>'); 
+	editButton.text('Edit');
+	editButton.attr('id', i);
+	editButton.attr('realId', events[i].id)
+	editButton.click(function(e){
+		table.remove();
+		createButton.remove(); 
+		var table1=$('<table>');
+		var row = $('<tr><td>'  +  events[e.target.id].itemname + '</td><td>'  +  events[e.target.id].weight + '</td><td>'+events[e.target.id].date  +'</td><td>'+events[e.target.id].recyclable +'</td></tr>');
+	    table1.append(row);
+		$('body').append(table1);
+		var editForm=$('<form>');
+		var itemInput=$('<input>');
+		itemInput.attr('placeholder', 'Item Name');
+		var weightInput=$('<input>');
+		weightInput.attr('placeholder', 'Weight');
+		var dateInput=$('<input>');
+		dateInput.attr('placeholder', 'YYYY/MM/DD');
+		var recycInput=$('<input>');
+		recycInput.attr('placeholder', 'true/false');
+		
+		var editSubmit=$('<button>');
+		editSubmit.attr('id', $(this).closest('button').attr('realId'));
+		editSubmit.click(function(e){
+			var value = {"itemname": itemInput.val()};
+			$.ajax({
+			    type: "POST",
+			    url: "api/Events/"+e.target.id,
+			    dataType: "json",
+			    contentType: 'application/json',
+			    data: JSON.stringify(value),
+			    success: createTable
+			});
+		}); 
+		
+		editSubmit.text('Submit');
+		editForm.append(itemInput);
+		editForm.append(weightInput);
+		editForm.append(dateInput);
+		editForm.append(recycInput);
+		editForm.append(editSubmit);
+		$('body').append($(editForm));
+	});
+	editButtons[i]=editButton; 
+		}
+	
+	
+	}//end edit buttons
+
 
 var newItem=function(){
-var createButton=$('<button>');
 createButton.text('New Item');
 createButton.click(function(e){
 	createButton.remove();
@@ -34,7 +117,7 @@ createButton.click(function(e){
 	var weightInput=$('<input>');
 	weightInput.attr('placeholder', 'Weight');
 	var dateInput=$('<input>');
-	dateInput.attr('placeholder', 'MMMM/DD/YY');
+	dateInput.attr('placeholder', 'YYYY/MM/DD');
 	var recycInput=$('<input>');
 	recycInput.attr('placeholder', 'true/false');
 	var addSubmit=$('<button>');
@@ -75,4 +158,4 @@ $('body').append(createButton);
 
 
 
-createTable();
+

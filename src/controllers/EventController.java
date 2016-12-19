@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import data.EventDAO;
-import entities.Event;
+import entities.events;
 
 
 @RestController
@@ -27,44 +27,40 @@ public class EventController {
 	}
 	
 	@RequestMapping(path="Events", method=RequestMethod.GET)
-	public List<Event> index(){
+	public List<events> index(){
 	  return EventDAO.index();
 	}
 
 	@RequestMapping(path="Events/{id}", method=RequestMethod.GET)
-	public Event show(@PathVariable int id){	
+	public events show(@PathVariable int id){	
 		return EventDAO.show(id); 
 	}
 	
-//	@RequestMapping(path="Events/{id}/scores", method=RequestMethod.GET)
-//	public List showScores(@PathVariable int id){	
-//		return EventDAO.showScores(id); 
-//	}
 	
-	@RequestMapping(path="Events/{id}", method=RequestMethod.PUT)
-		public Event update(@PathVariable int id, @RequestBody String EventJSON){
+	@RequestMapping(path="Events/{id}", method=RequestMethod.POST)
+		public events update(@PathVariable int id, @RequestBody String EventJSON){
 		ObjectMapper mapper= new ObjectMapper(); 
-		Event u= null; 
+		events u= null; 
 		try{
-			u=mapper.readValue(EventJSON, Event.class);
+			u=mapper.readValue(EventJSON, events.class);
 		}catch( Exception e){
 			System.out.println(e);
 		}
 		return EventDAO.update(id, u); 
 	}
 	@RequestMapping(path="Events",method=RequestMethod.POST)	
-	public Event create(@RequestBody String EventJSON){ 
+	public events create(@RequestBody String EventJSON){ 
 		ObjectMapper mapper= new ObjectMapper(); 
-		Event ev= null; 
+		events ev= null; 
 		try{
-			ev=mapper.readValue(EventJSON, Event.class);
+			ev=mapper.readValue(EventJSON, events.class);
 		}catch( Exception e){
 			System.out.println(e);
 		}
 		return EventDAO.create(ev); 
 	}
 	@RequestMapping(path="Events/{id}", method=RequestMethod.DELETE)
-	public Event delete(@PathVariable int id){
+	public events delete(@PathVariable int id){
 	return EventDAO.delete(id); 
 	}
 	
