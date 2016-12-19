@@ -22,28 +22,22 @@ public class EventDAO {
 		return em.find(events.class,id); 
 	}
 	
-//	public List showScores(int id){
-//		String query = "Select u.scores from Event u where u.id=?1";
-//		List<Object[]> scores = em.createQuery(query, Object[].class)
-//				.setParameter(1, id)
-//				.getResultList();
-//		  return scores;
-//	}
+
 	
 	public events update(int id, events e){
 		events existingEvent=em.find(events.class, id);
 		if(e.getItemname()!=null){
 		existingEvent.setItemname(e.getItemname());
 		}
-//		if(e.getWeight()!=0){
-//			existingEvent.setWeight(e.getWeight());
-//			}
-//		if(e.getDate()!=null){
-//			existingEvent.setDate(e.getDate());
-//			}
-//		if(e.isRecyclable()!=null){
-//			existingEvent.setRecyclable(e.isRecyclable());
-//			}
+		if(e.getWeight()!=0){
+			existingEvent.setWeight(e.getWeight());
+			}
+		if(e.getDate()!=null){
+			existingEvent.setDate(e.getDate());
+			}
+		if(e.isRecyclable()!=null){
+			existingEvent.setRecyclable(e.isRecyclable());
+			}
 
 		em.persist(existingEvent);
 		em.flush(); 
@@ -53,7 +47,7 @@ public class EventDAO {
 	public events delete(int id){
 		events e=em.find(events.class, id);
 		em.createQuery("Delete from events e where e.id="+id).executeUpdate();
-		em.remove(e);
+
 		return e; 
 	}
 	

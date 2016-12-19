@@ -40,13 +40,13 @@ public class EventController {
 	@RequestMapping(path="Events/{id}", method=RequestMethod.POST)
 		public events update(@PathVariable int id, @RequestBody String EventJSON){
 		ObjectMapper mapper= new ObjectMapper(); 
-		events u= null; 
+		events ev= null; 
 		try{
-			u=mapper.readValue(EventJSON, events.class);
+			ev=mapper.readValue(EventJSON, events.class);
 		}catch( Exception e){
 			System.out.println(e);
 		}
-		return EventDAO.update(id, u); 
+		return EventDAO.update(id, ev); 
 	}
 	@RequestMapping(path="Events",method=RequestMethod.POST)	
 	public events create(@RequestBody String EventJSON){ 
