@@ -24,17 +24,28 @@ var myReq = $.ajax({
 createTable=function(events){
 	createEditButtons(events); 
 	createDeleteButtons(events);
-table.append( '<tr><th>'  +  "Item" + '</th><th>'  +  "Weight " +'</th><th>'  + "Date" +'</th><th>'  +"Recyclable" +'</th></tr>');
+
+table.append( '<tr><th>'  +  "Item" + '</th><th>'  +  "Weight (lbs)" +'</th><th>'  + "Date" +'</th><th>'  +"Recyclable" +'</th></tr>');
+var total=0;
 for(i=0; i<events.length; i++){
     var row = $('<tr><td>'  +  events[i].itemname + '</td><td>'  +  events[i].weight + '</td><td>'+events[i].date  +'</td><td>'+events[i].recyclable +'</td></tr>');
+    total += events[i].weight; 
     row.append(editButtons[i]);
     row.append(deleteButtons[i]);
     table.append(row);
     $('body').append(table);	
+ 
 }
+
 newItem();
+var totalBox=$('<div>'); 
+totalBox.text("Total Weight:" +total+ " lbs");
+$('body').append(totalBox); 
 
 }//end create Table
+
+
+
 
 
 createDeleteButtons=function(events){//create delete buttons
@@ -76,7 +87,7 @@ createEditButtons=function(events){//create edit buttons
 		var weightInput=$('<input>');
 		weightInput.attr('placeholder', 'Weight');
 		var dateInput=$('<input>');
-		dateInput.attr('placeholder', 'YYYY/MM/DD');
+		dateInput.attr('placeholder', 'YYYY-MM-DD');
 		var recycInput=$('<input>');
 		recycInput.attr('placeholder', 'true/false');
 		
